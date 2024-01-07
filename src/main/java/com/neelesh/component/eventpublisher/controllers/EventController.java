@@ -1,6 +1,6 @@
 package com.neelesh.component.eventpublisher.controllers;
 
-import com.neelesh.component.eventpublisher.models.TransactionMessage;
+import com.neelesh.component.eventpublisher.DTO.TransactionMessageDTO;
 import com.neelesh.component.eventpublisher.services.KafkaProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("v1/")
+@RequestMapping("v1/event")
 @Slf4j
 public class EventController {
 
@@ -22,12 +22,14 @@ public class EventController {
         this.kafkaProducerService = kafkaProducerService;
     }
 
-    @PostMapping("/event")
-    public ResponseEntity<String> event(@RequestBody TransactionMessage transactionMessage){
+    @PostMapping("/publish")
+    public ResponseEntity<String> event(@RequestBody TransactionMessageDTO transactionMessageDTO){
         UUID uuid = UUID.randomUUID();
-        log.info("We received the transaction with the key: " + uuid);
-        kafkaProducerService.send("transaction-topic", uuid, transactionMessage);
+        log.info(String.format("We received the transaction with the key %s & transactionMessage %s",
+                uuid, transactionMessageDTO.toString()));
 
-        return ResponseEntity.ok("Sent");
+        kafkaProducerService.send("transaction-topic", uuid, transactionMessageDTO);
+
+        return ResponseEntity.ok("Event Sent Successfully");
     }
 }

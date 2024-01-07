@@ -1,6 +1,6 @@
 package com.neelesh.component.eventpublisher.config;
 
-import com.neelesh.component.eventpublisher.models.TransactionMessage;
+import com.neelesh.component.eventpublisher.DTO.TransactionMessageDTO;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.UUIDSerializer;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class KafkaProducerConfig {
 
     @Bean
-    public ProducerFactory<UUID, TransactionMessage> producerFactory(){
+    public ProducerFactory<UUID, TransactionMessageDTO> producerFactory(){
         Map<String, Object>  configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
@@ -27,7 +27,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    KafkaTemplate<UUID, TransactionMessage> kafkaTemplate(){
+    KafkaTemplate<UUID, TransactionMessageDTO> kafkaTemplate(){
         return new KafkaTemplate<>(producerFactory());
     }
 }
