@@ -1,2 +1,2 @@
 # Kafka-Producer-Component-v1
-This is a Spring Boot Microservice that produces events to Kafka broker
+This is a Spring Boot Microservice that produces events to Kafka topic
